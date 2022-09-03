@@ -1,0 +1,26 @@
+version: '3'
+services:
+  strongswan:
+    image: gorodskih/docker_strongswan_ikev2_letsencrypt
+    container_name: strongswan_ikev2
+    ports:
+      - 500:500/udp
+      - 4500:4500/udp
+      - 80:80/tcp
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - letsencrypt:/etc/letsencrypt
+      - /etc/localtime:/etc/localtime:ro
+      - /secrets:/secrets:ro
+    environment:
+      - VPN_NETWORK=10.10.10.0/24
+      - ETH_DEVICE=eth0
+      - VPN_DNS=8.8.8.8,8.8.4.4
+      - VPN_DOMAIN=vpn.example.com
+      - E_MAIL=example@mail.com
+    tmpfs: /run
+    restart: always
+
+volumes:
+  letsencrypt:
