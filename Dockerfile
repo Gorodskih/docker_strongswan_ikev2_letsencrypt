@@ -16,9 +16,9 @@ VOLUME /etc/letsencrypt /secrets
 
 ENV VPN_NETWORK=10.10.10.0/24
 ENV ETH_DEVICE=eth0
-ENV VPN_DNS=8.8.8.8,8.8.4.4
 ENV VPN_DOMAIN=vpn.example.com
-ENV E_MAIL=example@mail.com
+ENV EMAIL=
+ENV VPN_DNS=
 
 EXPOSE 500/udp 4500/udp 80/tcp
 

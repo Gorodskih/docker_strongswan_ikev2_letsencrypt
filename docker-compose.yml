@@ -16,9 +16,9 @@ services:
     environment:
       - VPN_NETWORK=10.10.10.0/24
       - ETH_DEVICE=eth0
-      - VPN_DNS=8.8.8.8,8.8.4.4
       - VPN_DOMAIN=vpn.example.com
-      - E_MAIL=example@mail.com
+      - EMAIL=example@mail.com
+      - VPN_DNS=8.8.8.8,8.8.4.4
     tmpfs: /run
     restart: always
 

@@ -2,6 +2,15 @@
 
 echo "Creating strongswan config..."
 
+RIGHT_DNS=""
+if [ -n "${VPN_DNS}" ]
+then
+	echo "Using DNS servers: ${VPN_DNS}."
+	RIGHT_DNS="rightdns=${VPN_DNS}"
+else
+	echo "No DNS server is defined."
+fi
+
 cat > /etc/ipsec.conf << EOF
 config setup
 	charondebug="ike 1, knl 1, cfg 0"
@@ -26,7 +35,7 @@ conn ikev2-vpn
 	rightid=%any
 	rightauth=eap-mschapv2
 	rightsourceip=${VPN_NETWORK},fe80::0/16
-	rightdns=${VPN_DNS}
+	${RIGHT_DNS}
 	rightsendcert=never
 	eap_identity=%identity
 	ike=chacha20poly1305-sha512-curve25519-prfsha512,aes256gcm16-sha384-prfsha384-ecp384,aes256-sha1-modp1024,aes128-sha1-modp1024
@@ -38,8 +47,17 @@ cat > /etc/ipsec.secrets << EOF
 include /secrets/*.*
 EOF
 
+EMAIL_PARAM=" --register-unsafely-without-email"
+if [ -n "${EMAIL}" ]
+then
+	echo "Using email for certbot: ${EMAIL}."
+	EMAIL_PARAM=" -m ${EMAIL}"
+else
+	echo "Registering certificates unsafely without email."
+fi
+
 echo "Generating certificates using certbot..."
-certbot certonly -n --standalone -d "${VPN_DOMAIN}" -m "${E_MAIL}" --agree-tos --keep-until-expiring --key-type ecdsa
+certbot certonly -n --standalone -d "${VPN_DOMAIN}"${EMAIL_PARAM} --agree-tos --keep-until-expiring --key-type ecdsa
 
 /copy_certs.sh
 
