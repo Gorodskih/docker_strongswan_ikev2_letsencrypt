@@ -13,12 +13,14 @@ services:
       - letsencrypt:/etc/letsencrypt
       - /etc/localtime:/etc/localtime:ro
       - /secrets:/secrets:ro
+      - /logs:/logs
     environment:
       - VPN_NETWORK=10.10.10.0/24
       - ETH_DEVICE=eth0
       - VPN_DOMAIN=vpn.example.com
       - EMAIL=example@mail.com
       - VPN_DNS=8.8.8.8,8.8.4.4
+      - CERTBOT_PARAMS=
     tmpfs: /run
     restart: always
 
