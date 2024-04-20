@@ -70,8 +70,8 @@ else
 cat > /etc/letsencrypt/renewal-hooks/deploy/strongswan.sh <<- EOF
 	/copy_certs.sh
 
-	echo "Purging certificates by ipsec..."
-	ipsec purgecerts
+	echo "Reloading ipsec..."
+	ipsec reload
 	EOF
 
 	chmod +x /etc/letsencrypt/renewal-hooks/deploy/strongswan.sh
