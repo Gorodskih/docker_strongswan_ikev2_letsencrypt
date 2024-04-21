@@ -13,9 +13,18 @@ else
 	echo "No DNS server is defined."
 fi
 
+CHARONDEBUG=""
+if [ -n "${CHARON_DEBUG_PARAMS}" ]
+then
+	echo "Using charon debug parameters: ${CHARON_DEBUG_PARAMS}."
+	CHARONDEBUG="charondebug=${CHARON_DEBUG_PARAMS}"
+else
+	echo "Using default charon debug parameters."
+fi
+
 cat > /etc/ipsec.conf << EOF
 config setup
-	charondebug="ike 1, knl 1, cfg 0"
+	${CHARONDEBUG}
 	uniqueids=no
 
 conn ikev2-vpn

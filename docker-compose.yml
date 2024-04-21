@@ -21,6 +21,7 @@ services:
       - EMAIL=example@mail.com
       - VPN_DNS=8.8.8.8,8.8.4.4
       - CERTBOT_PARAMS=
+      - CHARON_DEBUG_PARAMS=ike 0, knl 0, cfg 0
     tmpfs: /run
     restart: always
 
