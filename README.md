@@ -1,4 +1,4 @@
-# docker_strongswan_ikev2_letsencrypt
+# docker_ikev2_letsencrypt
 
 ### Simple Docker container to start your own IKEv2 VPN server using Let's Encrypt certificate with auto renewal
 
@@ -8,7 +8,7 @@
 3. Add following line for each VPN user:
 `username : EAP "password"`
 4. Save and close the file.
-5. Copy file [docker-compose.yml](https://github.com/Gorodskih/docker_strongswan_ikev2_letsencrypt/blob/main/docker-compose.yml) to any folder
+5. Copy file [docker-compose.yml](https://github.com/Gorodskih/docker_ikev2_letsencrypt/blob/main/docker-compose.yml) to any folder
 6. Edit **docker-compose.yml**:
     1. Line **15**: change first **/secrets** to the created folder with passwords file. Do not change right side (**/secrets:ro**). (e.g. `- /foo/bar/secrets:/secrets:ro`)
     2. Line **20**: change **vpn.example.com** to your domain name (it should be already configured to point at your server's IP address).
