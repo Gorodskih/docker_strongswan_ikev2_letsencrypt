@@ -22,6 +22,7 @@ else
 	echo "Using default charon debug parameters."
 fi
 
+echo "Using network: ${VPN_NETWORK:?VPN_NETWORK is not set or empty!}."
 echo "Using IKE proposals: ${IKE_PROPOSALS:?IKE_PROPOSALS is not set or empty!}."
 echo "Using ESP proposals: ${ESP_PROPOSALS:?ESP_PROPOSALS is not set or empty!}."
 
@@ -41,7 +42,7 @@ conn ikev2-vpn
 	dpddelay=300s
 	rekey=no
 	left=%any
-	leftid=@${VPN_DOMAIN}
+	leftid=@${VPN_DOMAIN:?VPN_DOMAIN is not set or empty!}
 	leftcert=fullchain.pem
 	leftsendcert=always
 	leftsubnet=0.0.0.0/0,::/0
@@ -61,6 +62,8 @@ cat > /etc/ipsec.secrets << EOF
 include /secrets/*.*
 EOF
 
+echo "Generating certificates using certbot..."
+
 EMAIL_PARAM=" --register-unsafely-without-email"
 if [ -n "${EMAIL}" ]
 then
@@ -70,7 +73,14 @@ else
 	echo "Registering certificates unsafely without email."
 fi
 
-echo "Generating certificates using certbot..."
+
+if [ -n "${CERTBOT_PARAMS}" ]
+then
+	echo "Using additional params for certbot: ${CERTBOT_PARAMS}."
+else
+	echo "Additional params for certbot are not defined."
+fi
+
 certbot certonly -n --standalone -d "${VPN_DOMAIN}"${EMAIL_PARAM} --agree-tos --keep-until-expiring --key-type ecdsa --logs-dir "/logs/letsencrypt" ${CERTBOT_PARAMS}
 
 /copy_certs.sh
