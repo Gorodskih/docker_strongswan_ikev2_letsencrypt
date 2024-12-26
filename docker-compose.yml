@@ -1,7 +1,7 @@
 version: '3'
 services:
   strongswan:
-    image: gorodskih/docker_strongswan_ikev2_letsencrypt
+    image: gorodskih/docker_strongswan_ikev2_letsencrypt:latest
     container_name: strongswan_ikev2
     ports:
       - 500:500/udp
