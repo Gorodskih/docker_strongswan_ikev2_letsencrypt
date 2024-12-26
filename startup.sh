@@ -22,6 +22,9 @@ else
 	echo "Using default charon debug parameters."
 fi
 
+echo "Using IKE proposals: ${IKE_PROPOSALS:?IKE_PROPOSALS is not set or empty!}."
+echo "Using ESP proposals: ${ESP_PROPOSALS:?ESP_PROPOSALS is not set or empty!}."
+
 cat > /etc/ipsec.conf << EOF
 config setup
 	${CHARONDEBUG}
@@ -49,8 +52,8 @@ conn ikev2-vpn
 	${RIGHT_DNS}
 	rightsendcert=never
 	eap_identity=%identity
-	ike=chacha20poly1305-sha512-curve25519-prfsha512,aes256gcm16-sha384-prfsha384-ecp384,aes256-sha1-modp1024,aes128-sha1-modp1024
-	esp=chacha20poly1305-sha512,aes256gcm16-ecp384,aes256-sha256,aes256-sha1
+	ike=${IKE_PROPOSALS}
+	esp=${ESP_PROPOSALS}
 EOF
 
 cat > /etc/ipsec.secrets << EOF
